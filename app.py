@@ -579,6 +579,9 @@ def _secret_get(path: list[str], default=None):
         return default
 
 def _get_vworld_key() -> str:
+    ui_key = (st.session_state.get("tx_api_vworld_key") or "").strip()
+    if ui_key:
+        return ui_key
     return (
         _secret_get(["vworld", "api_key"], "")
         or _secret_get(["apis", "vworld_api_key"], "")
@@ -586,6 +589,9 @@ def _get_vworld_key() -> str:
     ).strip()
 
 def _get_molit_key() -> str:
+    ui_key = (st.session_state.get("tx_api_molit_key") or "").strip()
+    if ui_key:
+        return ui_key
     return (
         _secret_get(["molit", "service_key"], "")
         or _secret_get(["apis", "molit_service_key"], "")
@@ -1457,6 +1463,23 @@ def main():
         tab_api, tab_excel = st.tabs(["API 조회", "엑셀 조회"])
 
         with tab_api:
+            st.markdown("#### 🔑 API 키 입력")
+            k1, k2 = st.columns(2)
+            k1.text_input(
+                "VWORLD API Key",
+                value=st.session_state.get("tx_api_vworld_key", ""),
+                type="password",
+                key="tx_api_vworld_key",
+                help="동/번지 후보 조회에 사용됩니다.",
+            )
+            k2.text_input(
+                "국토부 실거래 API Key (Decoding)",
+                value=st.session_state.get("tx_api_molit_key", ""),
+                type="password",
+                key="tx_api_molit_key",
+                help="실거래 조회에 사용됩니다.",
+            )
+
             s1, s2, s3 = st.columns([1.2, 1.2, 1.0])
             property_type = s1.selectbox("건물 유형", ["아파트", "연립다세대(빌라)"], index=0, key="tx_api_property_type")
             sido = s2.selectbox("시/도", ["서울특별시", "경기도"], index=0, key="tx_api_sido")
