@@ -17,6 +17,7 @@ DATA_DIR = APP_DIR / "data"
 UPLOAD_DIR = DATA_DIR / "uploads"
 DB_PATH = DATA_DIR / "app.db"
 LOCAL_TZ = ZoneInfo("Asia/Seoul")
+BUILD_ID = "2026-02-25-01"
 DATA_DIR.mkdir(exist_ok=True)
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -1384,6 +1385,8 @@ def main():
     )
 
     st.sidebar.title("🏠 경매 분석기")
+    st.sidebar.caption(f"BUILD: {BUILD_ID}")
+    st.sidebar.caption(f"RUNFILE: {Path(__file__).name}")
     page = st.sidebar.radio("메뉴", ["새 분석", "분석 리스트", "실거래 조회", "실거래 리스트"], key="menu_radio")
 
     
